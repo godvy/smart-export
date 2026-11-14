@@ -29,21 +29,44 @@ class AppBridge:
     """
 
     def __init__(self, window: Any = None) -> None:
-        self.window: Any = window
+        self._window: Any = window
+        if window is not None:
+            try:
+                setattr(window, "_serializable", False)
+            except Exception:
+                pass
         self.last_output_dir: str = "Final_Stems"
 
     def set_window(self, window: Any) -> None:
         """Attaches active pywebview window instance to bridge."""
-        self.window = window
+        self._window = window
+        if window is not None:
+            try:
+                setattr(window, "_serializable", False)
+            except Exception:
+                pass
+
+    @property
+    def window(self) -> Any:
+        return self._window
+
+    @window.setter
+    def window(self, val: Any) -> None:
+        self._window = val
+        if val is not None:
+            try:
+                setattr(val, "_serializable", False)
+            except Exception:
+                pass
 
     def select_folder(self) -> str | None:
         """
         Invokes pywebview's native folder dialog to allow user directory selection.
         Returns the selected folder path as a string, or None if cancelled.
         """
-        if self.window is not None:
+        if self._window is not None:
             try:
-                res = self.window.create_file_dialog(webview.FOLDER_DIALOG)
+                res = self._window.create_file_dialog(webview.FOLDER_DIALOG)
                 if res:
                     if isinstance(res, (list, tuple)):
                         return str(res[0]) if len(res) > 0 else None
@@ -57,7 +80,7 @@ class AppBridge:
         Dispatches progress updates to the frontend pywebview client.
         Escapes special characters to safely evaluate JS string literals.
         """
-        if self.window is not None:
+        if self._window is not None:
             escaped_message = (
                 str(message)
                 .replace("\\", "\\\\")
@@ -66,7 +89,7 @@ class AppBridge:
                 .replace("\r", "\\r")
             )
             try:
-                self.window.evaluate_js(
+                self._window.evaluate_js(
                     f"window.updateProgress({percent}, '{escaped_message}')"
                 )
             except Exception:
@@ -146,9 +169,9 @@ class AppBridge:
         # Step 5: Completion notification
         self.notify_progress(100, "Export complete!")
 
-        if self.window is not None:
+        if self._window is not None:
             try:
-                self.window.evaluate_js(
+                self._window.evaluate_js(
                     f"window.onExportComplete({json.dumps(manifest)})"
                 )
             except Exception:
