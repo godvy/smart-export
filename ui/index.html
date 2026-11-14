@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Export - Intelligent DAW Stem Consolidator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="brand-group">
+        <div class="brand-icon">⚡</div>
+        <div class="brand-text">
+          <h1 class="brand-title">Smart Export</h1>
+          <p class="brand-subtitle">Intelligent DAW Stem Organizer &amp; Consolidator</p>
+        </div>
+      </div>
+      <div class="status-badge" id="app-status">
+        <span class="status-dot">●</span>
+        <span>Ready</span>
+      </div>
+    </header>
+
+    <!-- Main Workflow -->
+    <main class="workflow-main">
+      <!-- Drag & Drop Zone -->
+      <section class="drop-zone-section">
+        <div class="drop-zone" id="drop-zone" tabindex="0" role="region" aria-label="Audio Folder Drop Zone">
+          <div class="drop-zone-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="17 8 12 3 7 8"></polyline>
+              <line x1="12" y1="3" x2="12" y2="15"></line>
+            </svg>
+          </div>
+          <div class="drop-zone-content">
+            <p class="drop-title">Drag &amp; drop stem folder here</p>
+            <p class="drop-subtitle">Supports WAV, AIFF, and FLAC audio files</p>
+          </div>
+          <button type="button" class="btn-browse" id="btn-browse">Browse Folder</button>
+          <input type="file" id="folder-input" class="hidden" webkitdirectory directory multiple>
+          <div class="folder-display hidden" id="folder-display">
+            <span class="folder-icon">📁</span>
+            <span class="folder-name" id="folder-name">No folder selected</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Configuration Section -->
+      <section class="config-section">
+        <div class="config-group">
+          <label class="section-label">Consolidation Mode</label>
+          <div class="mode-selector" id="mode-selector" role="radiogroup" aria-label="Export Mode">
+            <button type="button" class="mode-pill active" data-mode="1" id="mode-instrument">By Instrument</button>
+            <button type="button" class="mode-pill" data-mode="2" id="mode-frequency">By Frequency</button>
+            <button type="button" class="mode-pill" data-mode="0" id="mode-rename">Rename Only</button>
+          </div>
+        </div>
+
+        <div class="config-group">
+          <label class="toggle-container" for="auto-rename">
+            <input type="checkbox" id="auto-rename" class="toggle-input" checked>
+            <span class="toggle-slider"></span>
+            <span class="toggle-text">Auto-rename stems with clean taxonomy</span>
+          </label>
+        </div>
+      </section>
+
+      <!-- Action Section -->
+      <section class="action-section">
+        <button type="button" class="btn-export" id="btn-export">
+          RUN SMART EXPORT
+        </button>
+      </section>
+
+      <!-- Live Progress Section -->
+      <section class="progress-section hidden" id="progress-section" aria-live="polite">
+        <div class="progress-info">
+          <span class="status-text" id="status-text">Analyzing Snare_Top.wav (14/38)...</span>
+          <span class="progress-percent" id="progress-percent">0%</span>
+        </div>
+        <div class="progress-bar" id="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <div class="progress-bar-fill" id="progress-bar-fill"></div>
+        </div>
+      </section>
+
+      <!-- Success Card -->
+      <section class="success-card hidden" id="success-card">
+        <div class="success-header">
+          <div class="success-badge">✓</div>
+          <div class="success-titles">
+            <h3 class="success-heading">Export Complete</h3>
+            <p class="success-count" id="success-count">0 stems exported successfully</p>
+          </div>
+        </div>
+        <div class="success-body">
+          <p class="summary-label">Exported Stems:</p>
+          <ul class="stem-summary-list" id="stem-summary-list"></ul>
+        </div>
+        <div class="success-actions">
+          <button type="button" class="btn-open-folder" id="btn-open-folder">
+            Open Output Folder
+          </button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
